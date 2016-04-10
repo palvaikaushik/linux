@@ -1,0 +1,27 @@
+<project name="demoproject" default="create-jar">
+
+
+<target name="clean">
+<delete dir="build/class"/>
+<delete dir="jarfile"/>
+</target>
+<target name="init" depends="clean">
+<mkdir dir="build/class"/>
+<mkdir dir="jarfile"/>
+
+</target>
+<target name="compile" depends="init">
+<javac srcdir="source"
+destdir="build/class"/>
+
+</target>
+<target name="create-jar" depends="compile">
+<jar destfile="jarfile/demo.jar" basedir="build/class"/>
+
+</target>
+
+<!--target name="zip">
+
+</target-->
+
+</project>
