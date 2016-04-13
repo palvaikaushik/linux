@@ -1,0 +1,52 @@
+<!--?xml version="1.0" encoding="UTF-8"?/-->
+<project name="demoproject" default="starttomcat">
+<property name="tomcat" location="C:\Program Files\apache-tomcat-7.0.68"/>
+<target name="clean">
+<delete dir="build/class"/>
+<delete dir="jarfile"/>
+<delete dir="war"/>
+<delete dir="lib"/>
+</target>
+<target name="init" depends="clean">
+<mkdir dir="build/class"/>
+<mkdir dir="war"/>
+<mkdir dir="lib"/>
+</target>
+
+<target name="copy" depends="init">
+<copy todir="lib">
+    <fileset dir="${tomcat}/lib"/>
+  </copy>
+  </target>
+<target name="compile" depends="copy">
+<javac srcdir="src/java"
+destdir="build/class"
+classpath="lib/servlet-api.jar"
+/>
+
+</target>
+<target name="copywebfiles" depends="compile">
+    <copy file="index.html" todir="build/class"/>
+  </target>
+   <target name="war" depends="copywebfiles,compile,init">
+   <war destfile="war/demo.war" webxml="web-inf/web.xml">
+  <fileset dir="build/class"/>
+  <lib dir="${tomcat}">
+  </lib>
+</war>
+</target>
+<target name="deploy" depends="war">
+<copy file="war/demo.war" todir="${tomcat}/webapps"/>
+<!--copy todir="${tomcat}/webapps">
+    <fileset dir="war"/>
+  </copy-->
+</target>
+<target name="starttomcat" depends="deploy">
+  <exec executable="${tomcat}/bin/startup.bat">
+    <!--arg value="startup.bat"/-->
+  </exec>
+    
+</target>
+
+
+</project>
